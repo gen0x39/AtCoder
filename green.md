@@ -32,6 +32,12 @@ N個の要素からなる集合{0,1,,...,N-1}の部分集合を調べ上げる�
 
 
 
+例題 
+
+- [ABC147 C](https://atcoder.jp/contests/abc147/tasks/abc147_c)
+
+
+
 ## 二分探索
 
 テンプレ
