@@ -1,9 +1,11 @@
+<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax:{inlineMath:[['\$','\$'],['\\(','\\)']],processEscapes:true},CommonHTML: {matchFontHeight:false}});</script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 # AtCoder緑に向けて
 
-AtCoder緑になるまでに要求される知識の内容を例題コードも含めて列挙した.
+AtCoder緑になるまでに要求される知識の内容を例題コードも含めて列挙した.  
 
-参考
-
+参考  
 - [AtCoder緑になるまでにやったこと、必要な知識](https://qiita.com/aki-takano/items/3b3e8c4e10920c1a755a)
 - [AtCoder 版！蟻本 (初級編)](https://qiita.com/drken/items/e77685614f3c6bf86f44)
 
@@ -15,28 +17,90 @@ AtCoderでTLEにならない時間計算量について
 
 > | ループ回数 |              蟻本の記載              |                 現在                 |
 > | :--------: | :----------------------------------: | :----------------------------------: |
-> |    10^6    |         余裕を持って間に合う         |                  -                   |
-> |     7      |           おそらく間に合う           |         余裕を持って間に合う         |
-> |     8      | 非常にシンプルな実装でない限り厳しい |           おそらく間に合う           |
-> |     9      |                  -                   | 非常にシンプルな実装でない限り厳しい |
+> |   $10^6$   |         余裕を持って間に合う         |                  -                   |
+> |   $10^7$   |           おそらく間に合う           |         余裕を持って間に合う         |
+> |   $10^8$   |   非常にシンプルな実装でない限り厳しい  |           おそらく間に合う           |
+> |   $10^9$   |                 -                 | 非常にシンプルな実装でない限り厳しい |
 
 ## bit全探索
 
 [bit 全探索](https://drken1215.hatenablog.com/entry/2019/12/14/171657)
 
+N個の要素からなる集合$\{0,1,,...,N-1\}$の部分集合を調べ上げる手法のこと。  
+累積和はある範囲の総和を調べる手法だが、これは部分集合を調べるので順序に関係しない問題を扱えそう??  
+bit全探索の典型問題である部分和問題を解いてみる。
 
+**部分和問題**
 
-N個の要素からなる集合{0,1,,...,N-1}の部分集合を調べ上げる手法のこと。
+N個の整数$a_0,a_1...,a_{N-1}$と正の整数$W$とが与えられる。  
+$a_0,a_1...,a_{N-1}$の中から何個か選んで総和を$W$とすることができるか？
 
-大事なポイントは、部分集合なので順番
+**制約**
 
+$1 \leq N \leq 20$
 
+**解法**
 
-例題 
+$N$が小さいので全探索$(2^N \sim 10^6)$できる。  
+選んだ総和がWに一致するものがあるかどうかを判定する。
 
-- [ABC147 C](https://atcoder.jp/contests/abc147/tasks/abc147_c)
+**サンプルコード**
 
+```c++
+#include <bits/stdc++.h>
+#define rep(i,n) for (int i = 0; i < (n); ++i)
+using namespace std;
 
+// int型をvector型に変換
+// bit: 集合を表す整数
+// N: 何個のものについて考えているか
+vector<int> IntegerToVector(int bit, int N) {
+    vector<int> S;
+    for (int i = 0; i < N; ++i) {
+        if (bit & (1 << i)) {
+            S.push_back(i);
+        }
+    }
+    return S;
+}
+
+int main(void){
+    // 入力
+    int N, W;
+    cin >> N >> W;
+    vector<int> a(N);
+    for(int i = 0; i < N; i++) cin >> a[i];
+
+    // bit全探索
+    bool exist = false;
+    for(int bit = 0; bit < (1 << N); bit++) {
+        // どれを選ぶか
+        vector<int> S = IntegerToVector(bit, N);
+
+        // 部分集合に対応する総和
+        int sum = 0;
+        
+        // 範囲ベースforループ
+        // http://vivi.dyndns.org/tech/cpp/range-for.html
+        for(int i : S) sum += a[i];
+
+        // 判定
+        if(sum == W) {
+            exist = true;
+            for(int i : S) cout << a[i] << " ";
+            cout << endl;
+        }
+    }
+
+    if (exist) cout << "Yes" << endl;
+    else cout << "No" << endl;
+
+    return 0;
+}
+```
+
+例題
+- [ABC147 C](https://atcoder.jp/contests/abc147/tasks/abc147_c) 令和ABCのC問で一番難しい問題らしい
 
 ## 二分探索
 
