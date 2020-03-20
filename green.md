@@ -1,6 +1,3 @@
-<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax:{inlineMath:[['\$','\$'],['\\(','\\)']],processEscapes:true},CommonHTML: {matchFontHeight:false}});</script>
-<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
 # AtCoder緑に向けて
 
 AtCoder緑になるまでに要求される知識の内容を例題コードも含めて列挙した.  
@@ -124,66 +121,104 @@ Atcoder 128 C
 
 ## 優先度付きキュー
 
-## 簡単なDFSとBFS
+> 次のような操作が行えるデータ構造をプライオリティキュー（優先度付きキュー）と呼びます。
+>
+> - 数を追加する。
+> - 最小の数値を取り出す（値を取得し、削除する）。
+>
+> 蟻本p.69より抜粋
 
-全探索
-
-## 簡単なDP
-
-[DPまとめコン](https://atcoder.jp/contests/dp)
-
-
-
-## 素数判定
-
-## 素因数分解
-
-## 累積和
-
-(参考) [累積和を何も考えずに書けるようにする！](https://qiita.com/drken/items/56a6b68edef8fc605821)
-
-簡単な概要
-
-長さNの配列に対してある範囲 [left, right) の総和を求める、というクエリがQ回飛んできたとする。愚直に実装するとO(NQ)のオーダーがかかってしまうが、この手法を実装するとO(N)で実装できる。
-
-
-
-どうやって？？？
-
-配列a_0,a_1, ..., a_N-1に対して、
-
-配列s_0,s_1,....,s_N-1,s_Nを以下のように定める。
-
-
-
-これにより、
-
-
-
-え、しゃくとり法でよくね？？？
-
-> [参考](https://qiita.com/xryuseix/items/1059101a31107ba330d4)
+最小値の取り出しを $O(1)$ でできるので、数列をなめていきながら最小値（最大値）が欲しいときに使える。
 
 例題
 
-- ABC084 D[]()
+- [POJ 2431 - Expedition](https://eagletmt.github.io/contests/blog/poj-2431/)
+- [PKU 3253 - Fence Repair](http://algoogle.hadrori.jp/pku/3253/)
 
-- []
+## 簡単なDFSとBFS
 
-- []
+[迷路は幅優先探索？](https://qiita.com/nati-ueno/items/a789095aff0aec10d5d0) 視覚的にわかりやすい
 
-- []
 
-  
 
-実装
+### DFS
 
-ABC084
 
-```c++
-#include iostream
-cout << "Yes" << endl;
-```
+
+### BFS
+
+[BFS (幅優先探索) 超入門！ 〜 キューを鮮やかに使いこなす 〜](https://qiita.com/drken/items/996d80bcae64649a6580)
+
+BFSは探索の始点となる頂点から、各頂点の最短経路を求めることのできるアルゴリズム。
+
+ただし、条件として各辺に重みのないグラフ（または各辺の重みが全て等しい）であることに限定される。
+
+例題
+
+- [ABC 007](https://atcoder.jp/contests/abc007/tasks/abc007_3) 迷路、BFSの基本
+
+
+
+## 簡単なDP
+
+
+
+例題
+
+- [Educational DP Contest / DP まとめコンテスト](https://atcoder.jp/contests/dp)
+
+## 素数判定
+
+エラトステネスの篩を使って、
+
+
+
+## 素因数分解
+
+
+
+## 累積和
+
+[累積和を何も考えずに書けるようにする！](https://qiita.com/drken/items/56a6b68edef8fc605821)
+
+長さNの配列に対してある範囲 [left, right) の総和を前処理を行うことにより$O(1)$で求めることができる手法。
+
+前処理
+
+配列$a_0,a_1, ..., a_{N-1}$に対して、
+
+配列$s_0,s_1,....,s_{N-1},s_N$を以下のように定める。
+
+- $s_0 = 0$
+- $s_1 = a_0$
+- $s_1 = a_0 + a_1$
+- $s_2 = a_0 + a_1 + a_2$
+- ...
+- $s_N = a_0 + a_1 + a_2 + ... + a_{N-1}$
+
+これにより $a$ の区間 [4, 13)  の総和
+
+- $a_4 + a_5 + a_6 + a_7 + a_8 + a_9 + a_{10} + a_{11} + a_{12}$
+
+は、
+
+- $s_{13} - s_4$
+
+となるから $O(1)$ で求められる。ここで上式を見ると、
+
+- $s_0 = 0, s_i = s_{i-1} + a_i   (i = 1,2,...,N )$
+
+という関係がある。これは $O(N)$ で実装できる。
+
+
+
+**しゃくとり法との相違点**
+
+しゃくとり法が使えるのは配列の任意の要素が正のときに限定されるが累積和は正負が混合されていても適用可能。
+
+例題
+
+- [AGC023 A](https://atcoder.jp/contests/agc023/tasks/agc023_a)
 
 ## しゃくとり法
 
